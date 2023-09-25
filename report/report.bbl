@@ -1,0 +1,76 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{ridgleySelfHealingFirstOrderDistributed2021}{article}{}
+      \name{author}{3}{}{%
+        {{hash=09595be021d543664b2b0839cda5efec}{%
+           family={Ridgley},
+           familyi={R\bibinitperiod},
+           given={Israel\bibnamedelimb L.\bibnamedelimi Donato},
+           giveni={I\bibinitperiod\bibinitdelim L\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=94eeb31e182aee8f9584f2be266bdebe}{%
+           family={Freeman},
+           familyi={F\bibinitperiod},
+           given={Randy\bibnamedelima A.},
+           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=ab9086b1452a1a9813fc6765151b4f61}{%
+           family={Lynch},
+           familyi={L\bibinitperiod},
+           given={Kevin\bibnamedelima M.},
+           giveni={K\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{25e76f84b0cf64d11da1a4c5bea44c73}
+      \strng{fullhash}{25e76f84b0cf64d11da1a4c5bea44c73}
+      \strng{bibnamehash}{25e76f84b0cf64d11da1a4c5bea44c73}
+      \strng{authorbibnamehash}{25e76f84b0cf64d11da1a4c5bea44c73}
+      \strng{authornamehash}{25e76f84b0cf64d11da1a4c5bea44c73}
+      \strng{authorfullhash}{25e76f84b0cf64d11da1a4c5bea44c73}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In this paper we describe a parameterized family of first-order distributed optimization algorithms that enable a network of agents to collaboratively calculate a decision variable that minimizes the sum of cost functions at each agent. These algorithms are self-healing in that their correctness is guaranteed even if they are initialized randomly, agents drop in or out of the network, local cost functions change, or communication packets are dropped. Our algorithms are the first single-Laplacian methods to exhibit all of these characteristics. We achieve self-healing by sacrificing internal stability, a fundamental trade-off for single-Laplacian methods.}
+      \field{title}{Self-{{Healing First-Order Distributed Optimization}}}
+      \field{urlday}{7}
+      \field{urlmonth}{3}
+      \field{urlyear}{2023}
+      \field{version}{2}
+      \field{year}{2021}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{doi}
+      \verb 10.48550/ARXIV.2104.01959
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2104.01959
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2104.01959
+      \endverb
+      \keyw{FOS: Computer and information sciences,{FOS: Electrical engineering,electronic engineering,information engineering},FOS: Mathematics,Multiagent Systems (cs.MA),Optimization and Control (math.OC),Systems and Control (eess.SY)}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
