@@ -1,9 +1,13 @@
-\documentclass{article}
+\documentclass[conference]{IEEEtran}
 \usepackage{graphicx} % Required for inserting images
 \usepackage{authblk}
 \usepackage{algpseudocode}
 \usepackage[style=ieee]{biblatex}
 \bibliography{bibliography}
+\usepackage{ amssymb }
+\usepackage{bbm}
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmin}{\arg\!\min}
 
 
 
@@ -19,11 +23,271 @@
 \section{Introduction}
 \label{sec:introduction}
 
-Thus far, we have shown that the self healing distributed optimization algorithm 
-converges to the optimal solution in the presence of node failures. However, we have not yet shown 
-that the algorithm converges at a reasonable rate. In this section, we will show that the algorithm 
-converges at a rate that is comparable to the rate of convergence of the distributed optimization algorithm 
-in the absence of node failures. \autocite{ridgleySelfHealingFirstOrderDistributed2021}
+In recent years, the field of networked systems has seen a rapid proliferation of
+applications ranging from swarm robotics to large-scale machine learning. A networked system
+refers to a system with a large number of nodes or individual components that contribute toward a
+common objective \autocite{yangSurveyDistributedOptimization2019}. In such systems, it is often 
+unfeasible to compute the global optimal solution for the common objective using a centralized processing element. 
+For a machine learning
+model that continuously trains itself and makes predictions based on billions of examples collected
+in real time from users or even physical sensors, it is unrealistic to upload every data point to a
+central server for several reasons. First, there may be communication bandwidth and
+computational limitations. Second, relying on a central element limits the resiliency of the network.
+Third, there are privacy concerns associated with centrally collecting users' personal information
+\autocite{boydDistributedOptimizationStatistical2010}, \autocite{ridgleySelfHealingFirstOrderDistributed2021}. Distributed optimization is the process used to find an optimal solution while circumventing
+the need for a central processing element. Specifically, a network of $n$ agents minimize a 
+global additive objective function by keeping a local estimate $x_{i}$ of the global minimizer 
+$x_{opt} = \argmin_{\theta} \sum_{i}f_{i}(\theta)$. The agents reach $x_{i} = x_{opt}$ by computing 
+ the gradients of only their local objective functions and communicating along edges of the graph \autocite{ridgleySelfHealingFirstOrderDistributed2021} The present study investigates the performance of the self-healing distributed optimization algorithm 
+proposed in \autocite{ridgleySelfHealingFirstOrderDistributed2021} through simulation.
 
+In Ridgley et al. \autocite{ridgleySelfHealingFirstOrderDistributed2021}, 
+the proposed self-healing distributed optimization algorithm is shown to converge 
+at a linear rate $\rho$ and conform to the same worst-case theoretical lower bound as proven in
+\autocite{sundararajanAnalysisDesignFirstOrder2020} ($\rho \geq max(\frac{\kappa-1}{\kappa+1},\sigma)$), where $\kappa$ is the condition ratio capturing the variation of curvature in the objective function, and $\sigma$ is a graph connectivity parameter.
+The primary novelty of the self-healing algorithm is that it guarantees correctness even if
+there is packet loss, agents drop out, or local cost functions change by not requiring the 
+trajectories to evolve on a specific subspace. The key mathematical difference in \autocite{ridgleySelfHealingFirstOrderDistributed2021} compared to
+previous work is that the location of the Laplacian and integrator are switched, with the integrator feeding into the Laplacian. In the case of
+packet loss, an additional packet loss protocol that has each node 
+remember the previous states of neighbors and use them for computation in the next iteration is implemented. \autocite{ridgleySelfHealingFirstOrderDistributed2021}. 
+A block diagram illustrating the work done by one agent during the algorithm is illustrated in Figure \ref{fig:agent_block_diagram}, while more detailed pseudo-code and proofs are available in \autocite{ridgleySelfHealingFirstOrderDistributed2021}.
+\\
+\begin {figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{agent_block_diagram.png}
+    \caption{Block diagram of work done by one agent during an iteration of the algorithm. $\mathcal{L}$ represents the Laplacian block, whereas
+    $\nabla f$ represents the gradient of the local cost function. }
+    \label{fig:agent_block_diagram}
+\end{figure}
+\\
+
+Although worst-case convergence rates were calculated from the optimization of algorithm parameters, 
+the average convergence rate of the algorithm when applied to real graphs was not explored. 
+Such is the case for much of the literature for distributed optimization algorithms. Nevertheless, the average convergence rate
+and its improvement over the worst-case is also important to understand for practical 
+applications such as swarm robotics, sensor networks, and distributed machine learning. 
+\subsection{Research Objectives}
+The present study aims to bridge the gap between theoretical worst-case convergence rates and
+realistic ones via simulation on gradient descent for a logistic regression problem. The effect of changing the following
+independent variables on the convergence rate and convergence time (number of iterations) was explored:
+
+\begin{itemize}
+    \item $\mu$ - The average degree of the nodes
+    \item \textit{n} - The total number of nodes
+    \item $\sigma$ - A parameter for graph connectivity in the range [0,1] defined by $\sigma = ||I-\Pi_{n}-\mathcal{L}||$, where $||\cdot||$ denotes the Euclidean norm, $\Pi_{n}$ is the projection matrix $\frac{1}{n}\mathbbm{1}\mathbbm{1}^{T} $ onto $\mathbbm{1}_n$, and $\mathcal{L}$ is the graph Laplacian.
+    \item $p$ - The probability of packet loss
+    \item Graph type - we consider Barabasi-Albert graphs, Erdos-Renyi graphs, and Watts-Strogatz graphs, and Random Geometric Disk graphs.
+\end{itemize} 
+
+\section{Methods}
+\label{sec:methods}
+\subsection{Graph Generation}
+
+\subsubsection{Generating 4 Types of Graphs}
+
+To generate the four types of graphs, the Graphs.jl package was used \autocite{Graphs2021}. For each graph type, a function to generate a graph based on a target 
+number of nodes and average degree was created. For Barabasi-Albert, an initial seed graph with $\frac{n*\mu}{2*(n-1)}+1$ nodes is created, and then the remaining
+nodes are added one by one using the preferential attachment model (each new node attaches to a sample of $\frac{n*\mu}{2*(n-1)}$ nodes with probability proportional to their
+degree). For Erdos-Renyi, each edge is added with probability $\frac{\mu}{n-1}$. For Watts-Strogatz, a ring lattice is first created, and then each edge is rewired with a probability of 0.01. 
+For Random Geometric Disk graphs, a communication radius is first calculated from finding the root of the function $f(r) = -\mu + (n-1) * \int_{0}^{r} P(s)$, where $P(s)$ is the probability function for
+the distribution of distances $s$ between two points on a disk defined by $P(s) = \frac{4s}{\pi} cos^{-1}(\frac{s}{2}) - \frac{2s^2}{\pi}\sqrt{1-\frac{s^2}{4}}$ \autocite{diskLinePacking}. Then, each node is placed randomly on a disk, and an edge is added between two nodes if their distance is less than the communication radius.
+\\
+\subsubsection{Generating Graphs with a Target $\sigma$}
+While there are standard methods for generating graphs based on number of nodes and a target average degree, a method for generating graphs based on 
+the $\sigma$ parameter has not been developed. In this study, we explore two methods. The first involves scaling all of the edge weights by a specific constant, which
+in turn scales the graph Laplacian and changes sigma. The second method involves changing the graph topology by rewiring the edges and changing the average degree to get a 
+minimum $\sigma$ value optimized by COSMO.jl \autocite{cosmo}, a convex optimization solver from Oxford control, that is as close as possible to the target $\sigma$ value. Datasets of graphs with
+varying $\sigma$ values were generated using both methods.
+
+\subsection{Simulation Setup}
+
+The main logistic regression dataset used for simulation was the COSMO Chip dataset from \autocite{cosmo}. Before running the algorithm, the datapoints are partitioned according to the 
+number of nodes in the graph using a seeded random partition. Then, the following local cost function yielded from the logistic loss function with 
+L2-regularization is used for each node: 
+\begin{equation}
+    f_i(x_i) = \sum_{j \in S_{i}} log(1+e^{-l_{j}x_{i}^{T}M(d_{j})}) + \frac{1}{n}||x_{i}||^{2},
+\end{equation}
+
+where $S_{i}$ is the set of datapoints assigned to node $i$, $l_{j}$ is the target label of datapoint $j$, and $M(d_{j})$ is the "higher-order polynomial embedding of datapoint j" \autocite{ridgleySelfHealingFirstOrderDistributed2021}.
+From this function, the condition ratio $\kappa$ is calculated as $\kappa = \frac{nL}{2}$, where $L$ is the Lipschitz constant of the gradient of the local cost function, which can be calculated from the largest eigenvalue of the Hessian.
+
+Using $\kappa$ and $\sigma$, the step size $\alpha$ and three other parameters from \autocite{sundararajanAnalysisDesignFirstOrder2020} were optimized using Brent's method from Optim.jl \autocite{Optim.jl-2018}. To have a reference for calculating the errors 
+at each iteration of the algorithm, the logistic regression problem was first solved centrally using Convex. \autocite{Convex.jl-2014}. 
+
+To speed up the simulation process, warm-starting with cached parameter values was implemented. For each simulation trial, the algorithm terminated when the maximum error was less than a specified tolerance, or until 40,000 iterations.
+
+\subsection{Calculating Convergence Rates}
+
+To calculate the simulation convergence rate, the linear part of the semilog plot of maximum error versus iteration must be found. A sliding window algorithm performing linear fits on sufficiently large intervals was implemented, with the 
+part of the curve with the highest R-squared value taken as the linear part. Then, the convergence rate was calculated as the slope of semilog plot raised to the power of the inverse of the number of iterations in the linear interval. 
+
+\section{Results}
+\label{sec:results}
+\subsection{Varying Average Degree $\mu$}
+Through simulating the algorithm on graphs with varying average degree but a fixed number of nodes (40) and $\sigma$ (0.7), it was found that the convergence rate had no clear relationship with the average degree both in the lossless and lossy case, as shown in 
+Figure \ref{fig:mu_lossless} and Figure \ref{fig:mu_lossy}. 
+
+\begin {figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{mu.png}
+    \caption{Convergence rate versus average degree for lossless case.}
+    \label{fig:mu_lossless}
+\end{figure}
+
+\begin {figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{mulossy.png}
+    \caption{Convergence rate versus average degree for lossy case (0.3 packet loss probability).}
+    \label{fig:mu_lossy}
+\end{figure}
+
+Some insights regarding the different graph types can also be derived. In the lossless case, there was 
+a clear distinction between the different graph types, with geometric disk graphs having the most desirable 
+convergence rates. However, in the lossy case, the convergence rates of the different graph types were more similar.
+
+\subsection{Varying Number of Nodes \textit{n}}
+Similar to varying the average degree, varying the number of nodes with a fixed $\sigma$ (0.7) did not yield any clear relationship between the convergence rate and the number of nodes, as shown in Figure \ref{fig:n_lossless} and Figure \ref{fig:n_lossy}.
+\begin {figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{4types.png}
+    \caption{Convergence rate versus number of nodes for lossless case.}
+    \label{fig:n_lossless}
+\end{figure}
+\begin {figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{4typeslossy.png}
+    \caption{Convergence rate versus number of nodes for lossy case (0.3 packet loss probability).}
+    \label{fig:n_lossy}
+\end{figure}
+
+To investigate whether the algorithm would perform at a similar level for larger graphs with larger datasets, a logistic 
+regression "moons" dataset with 10,000 datapoints was generated using the MLJ.jl package \autocite{Blaom2020}. A simulation was carried out on a 
+Barabasi-Albert graph with 300 nodes and $\sigma = 0.85$. The resulting convergence graph, shown in Figure \ref{fig:large_n}, 
+demonstrates that it is moving towards linear convergence, but the error is decreasing at a much slower rate. Due to limitations in
+computing power, no further exploration of large datasets was done. In future work, more simulation on large datasets to reveal the asymtotic behavior
+is a potential direction of study. 
+\begin {figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{large_n.png}
+    \caption{Semilog plot of maximum error as function of iteration number for large dataset simulation.}
+    \label{fig:large_n}
+\end{figure}
+
+\subsection{Varying $\sigma$}
+As $\sigma$ is a key parameter both in defining the theoretical worst-case lower bound for the convergence rate and the calculated worst-case rates through
+parameter optimization, it was expected that it would have a significant effect on the average convergence rate. Figures \ref{fig:sig1}, \ref{fig:sig2}, and \ref{fig:sig3}
+show the lossless and lossy simulation convergence rates as a function of sigma, alongside the optimized worst-case convergence rates. The 
+convergence rates exhibit an approximately linear relationship with sigma. As sigma increases (meaning less connected graph), the algorithm converges slower, which is intuitive. 
+At around $\sigma = 0.6$, there is somewhat of a discontinuity, in which the slope becomes higher after this point. Note that there are spikes in the optimized worst-case convergence rates
+throughout the curves. This is likely due to errors during the optimization of parameters, and was an issue in the original paper as well.
+
+\begin {figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{s-ba.png}
+    \caption{Convergence rate versus sigma for Barabasi-Albert, n=15.}
+    \label{fig:sig1}
+\end{figure}
+
+\begin {figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{s-er.png}
+    \caption{Convergence rate versus sigma for Erdos Renyi, n=15.}
+    \label{fig:sig2}
+\end{figure}
+
+\begin {figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{s-geo.png}
+    \caption{Convergence rate versus sigma for Geometric Disk, n=15.}
+    \label{fig:sig3}
+\end{figure}
+
+One key metric of interest for evaluating the performance of the algorithm is the average performance gain over the worst case. 
+To make a simple comparison, the ratio of logarithms of the simulation convergence rate and the worst-case guarantees were calculated. The results are
+shown in Table \ref{tab:log_ratios}. The average performance gain is around 2.0x for the lossless case and 1.7x for the lossy case. Barabasi-Albert graphs 
+exhibit the highest performance gain. 
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{c c c}
+    \hline
+    Type & Lossless log ratio & Lossy log ratio \\
+    \hline
+    \hline
+    Erdos Renyi & 2.022 & 1.694 \\
+    Barabasi Albert & 2.204 & 1.834 \\
+    Geometric & 2.050 & 1.673 \\
+    \end{tabular}
+    \caption{Performance gain of simulation convergence rate over worst-case convergence rate.}
+    \label{tab:log_ratios}
+\end{table}
+
+Figure \ref{fig:sig4} illustrates the logarithmic ratio of the simulation convergence rate and the worst-case convergence rate as a function of $\sigma$ for Erdos-Renyi graphs. 
+It exhibits a similar trend as in figures \ref{fig:sig1}, \ref{fig:sig2}, and \ref{fig:sig3}, with a sharp nonlinear increase in performance gains at around $\sigma = 0.6$. 
+The plots for Geometric and Barabasi-Albert graphs show a similar trends. The result that the algorithm has higher performance gains for more 
+sparsely connected graphs is not immediately intuitive, but it may be due to the method of calculating the worst-case convergence rate that leads to the estimate being more conservative
+at higher $\sigma$ values.
+
+\begin {figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{s-er-ratio.png}
+    \caption{Logarithmic ratio of simulation convergence rate and worst-case convergence rate versus sigma for Erdos Renyi, n=15.}
+    \label{fig:sig4}
+\end{figure}
+
+\subsection{Varying Packet Loss Probability $p$}
+
+Simulation of the packet loss protocol was carried out on a Erdos-Renyi graph with 15 nodes at various packet loss probabilities and four selected 
+$\sigma$ values. The results are shown in Figure \ref{fig:packet_loss}. As expected, the convergence rate becomes slower as the packet loss probability increases
+in an approximately linear relationship. The missing values on the right side of the curves in Figure \ref{fig:packet_loss} indicate that the algorithm timed out at
+40,000 iterations. The most interesting finding from this graph is that there is a clear inverse relationship between the first packet loss probability at which the algorithm 
+times out and $\sigma$, which is counterintuitive because graphs with lower $\sigma$ are more connected and have overall better performance. Future 
+studies can explore the causes behind this phenomenon further. 
+
+\begin {figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{s-er-pl-rate.png}
+    \caption{Convergence rate versus packet loss probability for Erdos-Renyi, n=15.}
+    \label{fig:packet_loss}
+\end{figure}
+
+Whereas the convergence rate has a linear relationship with packet loss probability, the convergence time (number of iterations) has a nonlinear relationship
+with packet loss probability. This is shown in Figures \ref{fig:packet_loss_time} and \ref{fig:packet_loss_time2}. A similar phenomenon where graphs with higher $\sigma$ reach timeout at lower packet loss 
+probabilities is also observed. In addition, there is a notable difference in the trajectory of the convergence time curves for different $\sigma$ values. For lower 
+$\sigma$ values, the convergence time demonstrates characteristics of a phase shift in the interval of 0.8 to 0.9 packet loss probability, meaning the 
+convergence time increases suddenly. For higher sigma values ($\sigma > 0.5$), the trajectory of the convergence time curves resembles a smoother exponential 
+increase. 
+
+\begin {figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{s-er-pl-time.png}
+    \caption{Convergence time versus packet loss probability for Erdos-Renyi, n=15.}
+    \label{fig:packet_loss_time}
+\end{figure}
+
+\begin {figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{s-er-pl-time_v2.png}
+    \caption{Convergence time versus packet loss probability for Erdos-Renyi, n=15.}
+    \label{fig:packet_loss_time2}
+\end{figure}
+
+\section{Discussion and Future Work}
+
+The results of the simulation study show that the average convergence rate of the self-healing distributed optimization algorithm is not strongly dependent on the average degree or number of nodes in the graph, but is strongly dependent on the $\sigma$ parameter.
+The algorithm has a 2x performance gain over the worst-case convergence rate in the lossless case. Furthermore, the packet loss protocol 
+performs well even at packet loss probabilities higher than 0.8, which is a promising result for real-world applications. For example, one swarm 
+robotics application in the Northwestern ECE's Swarm Group has a packet loss probability of around 0.45, which is well within the range of probabilities at which 
+the packet loss protocol converges quickly (within a few hundred iterations). Thus, the algorithm is a promising candidate for distributed optimization tasks
+in applications such as swarm robotics and sensor networks. For machine learning applications on large datasets, further work may need to be done to compare
+the algorithm's performance with other algorithms more commonly used in machine learning. 
+
+Apart from investigation of the algorithm's performance on large datasets, future work may focus on the underlying reasons for some of the 
+phenomenon identified in this study to further optimize the algorithm, such as the counterintuitive relationship between $\sigma$ and the first packet loss probability at which the algorithm times out.
+Moreover, the algorithm should be tested on a wider variety of objective functions beyond logistic regression. Finally, a couple aspects of the 
+algorithm could be considered for improvement. First, the optimization of the parameters, which requires some higher order computations, can be further refined so that
+errors are minimized, thus eliminating some of the spikes in figures \ref{fig:sig1}, \ref{fig:sig2}, and \ref{fig:sig3}. Second, while the current algorithm is 
+ synchronous by iteration, future work can explore asynchronous implementations that may lead to faster convergence. 
 \printbibliography
 \end{document}

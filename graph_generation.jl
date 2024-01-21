@@ -1,5 +1,6 @@
-using Graphs, Karnak, Colors, NetworkLayout, StatsBase, Printf, Infiltrator, Integrals, Roots, LinearAlgebra, DataFrames, CSV
+using Graphs, Karnak, Colors, NetworkLayout, StatsBase, Printf, Infiltrator, Integrals, Roots, LinearAlgebra, DataFrames, CSV, ProgressBars
 include("func_library.jl")
+
 
 function draw(g)
     @drawsvg begin
@@ -14,6 +15,8 @@ function draw(g)
                 for i in 1:nv(g)]
         )
     end 800 600
+
+
 end
 
 # Generates barabasi albert graph with target number of nodes n and 
@@ -100,7 +103,7 @@ tolerance::Float64, optimize::Bool, weight::Float64=1.0,sigma::Float64=0.0)
     graph_dict = Dict{String,SimpleGraph}()
     metadata = DataFrame(name=[],n=[],mu=[],target=[],sigma=[],sigma_error=[],scale=[],type=[])
     
-    for n = min_n:interval:max_n
+    for n in tqdm(min_n:interval:max_n)
 
         # match to target sigma
         if optimize == true
@@ -144,7 +147,12 @@ tolerance::Float64, optimize::Bool, weight::Float64=1.0,sigma::Float64=0.0)
             mu = round(n*mu_percent)
             g = func(Int64(n),Int64(mu));
             name = "g"*string(n)
-            scales = 0.01:0.0025:1
+            if n > 200
+                scales = 0.0005:0.0005:0.1
+            else
+                scales = 0.0005:0.0005:1
+            end
+            
             laplacians = scaled_laplacian.(Ref(g),scales)
             sigmas = basic_sigma.(laplacians)
 
@@ -216,7 +224,7 @@ function generate_var_mu(func::Function, min_mu::Int64, max_mu::Int64, number::I
                 g = func(n,Int64(mu));
                 name = "g"*string(mu)
                 println(mu)
-                scales = 0.01:0.00251:1
+                scales = 0.001:0.001:1
                 laplacians = scaled_laplacian.(Ref(g),scales)
                 sigmas = basic_sigma.(laplacians)
 
@@ -243,83 +251,7 @@ function generate_var_mu(func::Function, min_mu::Int64, max_mu::Int64, number::I
         end
     end
 
-function generate_var_n(func::Function, min_n::Int64, max_n::Int64, number::Int64, mu_percent::Float64, 
-tolerance::Float64, optimize::Bool, weight::Float64=1.0,sigma::Float64=0.0)
 
-    interval = round((max_n-min_n)/number)
-    graph_dict = Dict{String,SimpleGraph}()
-    metadata = DataFrame(name=[],n=[],mu=[],target=[],sigma=[],sigma_error=[],scale=[],type=[])
-    
-    for n = min_n:interval:max_n
-
-        # match to target sigma
-        if optimize == true
-            mu = round(n*mu_percent)
-            if func==custom_geometric
-                mu_s = 1:Int64(ceil(mu/15)):n-3
-            else
-                mu_s = 1:Int64(ceil(mu/15)):n-1
-            end
-
-            graphs = func.(Ref(Int64(n)),Int64.(mu_s))
-            laplacians = scaled_laplacian.(graphs,Ref(weight))
-            results = spectral_gap.(laplacians)
-            sigmas = getfield.(results,2)
-            lambdas = getfield.(results,1)
-            
-            # filter acceptable sigmas
-
-            sigma_errors = abs.(sigmas .- sigma)/sigma
-            mask = sigma_errors .< tolerance
-
-            sigmas = sigmas[mask]
-            graphs = graphs[mask]
-            mu_s = mu_s[mask]
-            sigma_errors = sigma_errors[mask]
-            lambdas = lambdas[mask]
-            
-            if length(sigmas) == 0
-                println("No acceptable graphs found for n = " * string(n))
-                continue
-            end
-            
-            for i in eachindex(graphs)
-                name = "g"*string(n)*"_" * string(mu_s[i])
-                graph_dict[name] = graphs[i]
-                push!(metadata, [name, n, mu_s[i], sigma,sigmas[i], sigma_errors[i], lambdas[i], string(func)])
-            end
-
-        else
-            # multiply the Laplacian by a constant to get different sigmas
-            mu = round(n*mu_percent)
-            g = func(Int64(n),Int64(mu));
-            name = "g"*string(n)
-            scales = 0.01:0.0025:1
-            laplacians = scaled_laplacian.(Ref(g),scales)
-            sigmas = basic_sigma.(laplacians)
-
-            sigma_errors = abs.(sigmas .- sigma)/sigma
-            min_error, index = findmin(sigma_errors)
-
-            if min_error > tolerance
-                println("No acceptable graphs found for n = " * string(n))
-            else
-                push!(metadata, [name, n, mu, sigma, sigmas[index], min_error, scales[index], string(func)])
-            end
-            
-            graph_dict[name] = g
-        end
-        
-    end
-
-    if optimize == true
-        savegraph("data/n-"*string(func)*"-"*string(min_n)*"-"*string(max_n)*"-"*string(sigma)*"opt.lg",graph_dict)
-        CSV.write("data/n-"*string(func)*"-"*string(min_n)*"-"*string(max_n)*"-"*string(sigma)*"opt.csv", metadata)
-    else
-        savegraph("data/n-"*string(func)*"-"*string(min_n)*"-"*string(max_n)*"-"*string(sigma)*".lg",graph_dict)
-        CSV.write("data/n-"*string(func)*"-"*string(min_n)*"-"*string(max_n)*"-"*string(sigma)*".csv", metadata)
-    end
-end
 
 function generate_var_sigma(func::Function, min_s::Float64, max_s::Float64, number::Int64, n::Int64, mu_percent::Float64, 
     tolerance::Float64, optimize::Bool)

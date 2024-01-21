@@ -8,9 +8,11 @@ using DataFrames
 import MLJ
 import Printf
 using JuMP
-using Convex,Mosek, MosekTools, LinearAlgebra, MathOptInterface, Optim, GLM, Random, Printf
+using Convex,Mosek, MosekTools, LinearAlgebra, MathOptInterface, Optim, GLM, Random, Printf, ProgressBars
 
-
+### Adaptped from code developed by Israel Donato Ridgley, Ph.D. graduate from Northwestern University (israelridgley@gmail.com)
+### Lines 1-656 are functions that were unmodified from Israel's original work. 
+###
 
 ### STUFF FOR CERTIFYING CONVERGENCE
 
@@ -702,7 +704,7 @@ function unstable_gd(G,F,d,L,max_iter;random_init=false, drop_prob=zeros(size(L)
         println("Entering Lossy Channel")
         # init edge states
         M = rand(n,d,n)
-        for k = 1:max_iter
+        for k = ProgressBar(1:max_iter)
             y[:,:,k] = Cy'w[:,:,k]
 
             # compute v given packet drops
@@ -731,7 +733,7 @@ function unstable_gd(G,F,d,L,max_iter;random_init=false, drop_prob=zeros(size(L)
 
         end
     else
-        for k = 1:max_iter
+        for k = ProgressBar(1:max_iter)
             y[:,:,k] = Cy'w[:,:,k]
             v[:,:,k] = L*y[:,:,k]
             x[:,:,k] = Cx'w[:,:,k] + Dx'*[u[:,:,k];v[:,:,k]]
@@ -779,7 +781,7 @@ struct LogisticRegression{T<:Real} <: AbstractModelData{T}
         new{T}(H,Γ,μ₁,μ₂,size(H,1),length(Γ),μ₂,μ₂+0.25*opnorm(H)^2)
 end
 
-function logistic_regression_COSMO_chip_data(n,d=6,μ₁=0.1,μ₂=0.1)
+function logistic_regression_with_data(filename,n,d=6,μ₁=0.1,μ₂=0.1)
     # random partition samples into n groups
     # d = polynomial degree for mapping 2d features (d=6 in COSMO docs)
     # μ₁ is the ℓ₁ regularization parameter, μ₁|x|₁
@@ -788,7 +790,7 @@ function logistic_regression_COSMO_chip_data(n,d=6,μ₁=0.1,μ₂=0.1)
     # example in the COSMO docs regularizes using the ℓ₂-norm rather
     # than the square of the norm. So to get a solution close to the one
     # in the COSMO docs we take μ₂=0.1 instead of μ₂=1.)
-    df = DataFrame(CSV.File("data/chip_data.txt",header=false)) #|> DataFrame
+    df = DataFrame(CSV.File(filename,header=false)) #|> DataFrame
     x = Matrix(df[:,1:2])
     y = df[:,3]
     S = length(y)

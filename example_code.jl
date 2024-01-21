@@ -8,7 +8,7 @@ include("graph_generation.jl")
 # end of Donato Ridgley et al 2021 without the SVL results
 
 
-iter = 1000
+iter = 10000
 
 
 # Make Graph
@@ -55,7 +55,7 @@ kappa = Lip/m
 
 
 # Packet Loss Probability
-pl = 0.3
+pl = 0.9
 
 # Optimize SH-SVL parameters
 # This solves the LMI from the paper repeatedly and finds alg parameters
@@ -140,8 +140,8 @@ e2 = [maximum([norm(xp[i,:,k].-xopt,Inf) for i=1:n]) for k=1:lossy_time]
 # you will likely need additional guard rails before gathering data to ensure nothing 
 # unexpected happens
 
-r = (e[200]/e[100])^(1/100)
-r2 = (e2[200]/e2[100])^(1/100)
+r,r2 = window_rho(e,e2,lossless_time,lossy_time)
+
 
 @printf("Alg 2 lossless rho = %0.4f\n", r)
 @printf("Alg 2 lossy rho = %0.4f\n", r2)

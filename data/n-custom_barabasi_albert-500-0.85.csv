@@ -1,0 +1,2 @@
+name,n,mu,target,sigma,sigma_error,scale,type
+g500.0,500.0,400.0,0.85,0.8364074463847287,0.015991239547377918,0.004,custom_barabasi_albert

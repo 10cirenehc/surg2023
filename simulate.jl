@@ -1,10 +1,11 @@
-using LinearAlgebra, Plots, Convex, Mosek, MosekTools, JuMP, LaTeXStrings, Printf, Measures, Serialization, Graphs, CurveFit
+using LinearAlgebra, Plots, Convex, Mosek, MosekTools, JuMP, LaTeXStrings, Printf, Measures, Serialization, Graphs, CurveFit, ProgressBars
 
 include("func_library.jl")
 
-function simulate_file(filename::String, opt_problem::Function, problem_type::String, iter::Int64, optimize_params::Bool, warmstart::Bool, 
-    prev_optparam::Array,pl::Float64,alpha::Float64=0.1)
+function simulate_file(filename::String, opt_problem::Function, dataset_file::String, problem_type::String, iter::Int64, optimize_params::Bool, warmstart::Bool, 
+    pl::Float64,use_prev_optparam::Bool,tolerance::Float64= 1e-5, alpha::Float64=0.1)
 
+    prev_optparam = []
     varying_sigma = false
     if cmp(split(filename,"-")[1], "s") == 0
         varying_sigma = true
@@ -13,7 +14,6 @@ function simulate_file(filename::String, opt_problem::Function, problem_type::St
     metadata = DataFrame(CSV.File("data/"*filename*".csv",header=true))
     graphs_filename = "data/"*filename*".lg"
     
-    metadata.opt_rho = missings(Float64, nrow(metadata))
     metadata.lossless_rho = missings(Float64, nrow(metadata))
     metadata.lossy_rho = missings(Float64, nrow(metadata))
 
@@ -23,14 +23,24 @@ function simulate_file(filename::String, opt_problem::Function, problem_type::St
     metadata.lossy_e = missings(Float64,nrow(metadata))
     metadata.kappa = missings(Float64,nrow(metadata))
 
-    prev_optparam = Diagonal([1,2,2,2])*rand(4)
+    if use_prev_optparam == false
+        metadata.opt_rho = missings(Float64, nrow(metadata))
+        metadata.alpha = missings(Float64,nrow(metadata))
+        metadata.delta = missings(Float64,nrow(metadata))
+        metadata.eta = missings(Float64,nrow(metadata))
+        metadata.zeta = missings(Float64,nrow(metadata))
+    end
+
+    if prev_optparam === nothing
+        prev_optparam = Diagonal([1,2,2,2])*rand(4)
+    end
 
     mkpath("figures/"*filename)
 
     sigma_sum = 0
     max_kappa = 0
 
-    for j in 1:size(metadata,1)
+    for j in tqdm(1:size(metadata,1))
         name = String(metadata[j,"name"])
         graph = Graphs.loadgraph(graphs_filename,name)
         sigma = metadata[j,"sigma"]
@@ -40,7 +50,7 @@ function simulate_file(filename::String, opt_problem::Function, problem_type::St
         A = adjacency_matrix(graph)
         n,n = size(A)
 
-        data,X,Y,H,Gam = opt_problem(n,6,0,1)
+        data,X,Y,H,Gam = opt_problem(dataset_file, n,6,0,1)
         X = X'
         d = size(X)[2]
         
@@ -63,24 +73,37 @@ function simulate_file(filename::String, opt_problem::Function, problem_type::St
         sigma = sigma_sum/size(metadata,1)
         kappa = max_kappa
     
-        if optimize_params == true
-            optparam, rho = optimize_parameters(sigma,kappa,false,[])
-            alpha, delta, eta, zeta = optparam
+        if use_prev_optparam == true
+            rho = metadata[1,"opt_rho"]
+            alpha = metadata[1,"alpha"]
+            delta = metadata[1,"delta"]
+            eta = metadata[1,"eta"]
+            zeta = metadata[1,"zeta"]
+
         else
-            # Default NIDS parameters
-            delta = 0.5
-            eta = 0.5
-            zeta = 1.0
-        
-        end
+            if optimize_params == true
+                optparam, rho = optimize_parameters(sigma,kappa,false,[])
+                alpha, delta, eta, zeta = optparam
+
+            else
+                # Default NIDS parameters
+                delta = 0.5
+                eta = 0.5
+                zeta = 1.0
+            
+            end
+        end 
     end
 
-    for i in 1:size(metadata,1)
+    # Start running algorithm
+    Threads.@threads for i in tqdm(1:size(metadata,1))
         name = String(metadata[i,"name"])
         graph = Graphs.loadgraph(graphs_filename,name)
         sigma = metadata[i,"sigma"]
         scale = metadata[i, "scale"]
         kappa = metadata[i, "kappa"]
+
+        
         
         @printf("sigma = %0.5f\n", sigma)
         
@@ -93,12 +116,21 @@ function simulate_file(filename::String, opt_problem::Function, problem_type::St
         @printf("calculated sigma = %0.5f\n", calc_sigma)
 
         if varying_sigma == true
-            if i ==1
-                optparam, rho = optimize_parameters(sigma,kappa,false,[])
+            if use_prev_optparam == false
+                if i ==1
+                    optparam, rho = optimize_parameters(sigma,kappa,false,[])
+                else
+                    optparam, rho = optimize_parameters(sigma,kappa,true,prev_optparam)
+                end
+                alpha, delta, eta, zeta = optparam
             else
-                optparam, rho = optimize_parameters(sigma,kappa,true,prev_optparam)
+                alpha = metadata[i,"alpha"]
+                delta = metadata[i,"delta"]
+                eta = metadata[i,"eta"]
+                zeta = metadata[i,"zeta"]
+                rho = metadata[i,"opt_rho"]
+                optparam = [alpha,delta,eta,zeta]
             end
-            alpha, delta, eta, zeta = optparam
         end
 
         # Make objective functions
@@ -111,7 +143,7 @@ function simulate_file(filename::String, opt_problem::Function, problem_type::St
             f = x -> LogReg(x,H,Gam) # Calculate the cost
         end
 
-        data,X,Y,H,Gam = opt_problem(n,6,0,1)
+        data,X,Y,H,Gam = opt_problem(dataset_file,n,6,0,1)
         X = X'
         d = size(X)[2]
         
@@ -138,8 +170,8 @@ function simulate_file(filename::String, opt_problem::Function, problem_type::St
 
         # Simulate SH-SVL with and without packet loss, x and xp are the
         # only signals we care about
-        u,v,w,x,y,lossless_time = unstable_gd(G,f,d,L,iter;random_init=true,xopt=xopt)#;drop_prob=0.3*ones(size(L)),predict = eta)
-        u,v,w,xp,y,h,lossy_time= unstable_gd(G,f,d,L,iter;random_init=true, drop_prob=pl*ones(size(L)),predict = eta,xopt=xopt)
+        u,v,w,x,y,lossless_time = unstable_gd(G,f,d,L,iter;random_init=true,xopt=xopt,tolerance = tolerance)#;drop_prob=0.3*ones(size(L)),predict = eta)
+        u,v,w,xp,y,h,lossy_time= unstable_gd(G,f,d,L,iter;random_init=true, drop_prob=pl*ones(size(L)),predict = eta,xopt=xopt, tolerance=tolerance)
 
         display(time)
 
@@ -157,6 +189,10 @@ function simulate_file(filename::String, opt_problem::Function, problem_type::St
         metadata[i,"lossy_t"] = lossy_time
         metadata[i,"lossless_e"] = e[end]
         metadata[i,"lossy_e"] = e2[end]
+        metadata[i,"alpha"] = alpha
+        metadata[i,"delta"] = delta
+        metadata[i,"eta"] = eta
+        metadata[i,"zeta"] = zeta
 
         @printf("Alg 2 lossless rho = %0.4f\n", rho1)
         @printf("Alg 2 lossy rho = %0.4f\n", rho2)
@@ -166,13 +202,16 @@ function simulate_file(filename::String, opt_problem::Function, problem_type::St
         plot(e, yaxis=:log,ylabel=err,xlabel="iterations",label="Alg 2, lossless",color=1,linestyle=:solid, size=[800,600], margin=10Measures.mm)
         plot!(e2, yaxis=:log,ylabel=err,xlabel="iterations",label="Alg 2, lossy",color=1,linestyle=:dash)
 
-        savefig("figures/"*filename*"/"*name*".png")
+        savefig("figures/"*filename*"/"*name*string(pl)*".png")
 
         prev_optparam = Diagonal(optparam)
 
     end
-
-    CSV.write("data/"*filename*".csv",metadata)
+    if tolerance != 1e-5
+        CSV.write("data/"*filename*string(pl)*"tol"*string(tolerance)*".csv",metadata)
+    else
+        CSV.write("data/"*filename*string(pl)*".csv",metadata)
+    end
     
 end
 
@@ -223,10 +262,17 @@ end
 # simulate_file("s-custom_erdos_renyi-0.2-0.95-15",logistic_regression_COSMO_chip_data,"LogisticRegression",40000,true,false,[],0.3)
 # simulate_file("s-custom_geometric-0.2-0.95-15",logistic_regression_COSMO_chip_data,"LogisticRegression",40000,true,false,[],0.3)
 
-simulate_file("s-custom_barabasi_albert-0.2-0.95-15opt",logistic_regression_COSMO_chip_data,"LogisticRegression",40000,true,false,[],0.3)
-simulate_file("s-custom_erdos_renyi-0.2-0.95-15opt",logistic_regression_COSMO_chip_data,"LogisticRegression",40000,true,false,[],0.3)
-simulate_file("s-custom_geometric-0.2-0.95-15opt",logistic_regression_COSMO_chip_data,"LogisticRegression",40000,true,false,[],0.3)
+# simulate_file("s-custom_barabasi_albert-0.2-0.95-15opt",logistic_regression_COSMO_chip_data,"LogisticRegression",40000,true,false,[],0.3)
+# simulate_file("s-custom_erdos_renyi-0.2-0.95-15opt",logistic_regression_COSMO_chip_data,"LogisticRegression",40000,true,false,[],0.3)
+# simulate_file("s-custom_geometric-0.2-0.95-15opt",logistic_regression_COSMO_chip_data,"LogisticRegression",40000,true,false,[],0.3)
 
+#simulate_file("n-custom_barabasi_albert-10-50-0.7",logistic_regression_with_data,"data/chip_data.txt","LogisticRegression",40000,true,false,0.3,false,1e-6)
 
+# packet_losses = 0.1:0.05:0.95
+# for i in 1:length(packet_losses)
+#     simulate_file("s-custom_erdos_renyi-0.2-0.95-15",logistic_regression_with_data,"data/chip_data.txt","LogisticRegression",40000,true,false,packet_losses[i],false,1e-6)
+# end
+# simulate_file("s-custom_erdos_renyi-0.2-0.95-15",logistic_regression_with_data,"data/chip_data.txt","LogisticRegression",40000,true,false,0.98,false,1e-6)
 
-
+# simulate_file("n-custom_barabasi_albert-0-1500-0.85",logistic_regression_with_data,"data/moon10000.txt","LogisticRegression",40000,true,false,0.3,[])
+simulate_file("n-custom_barabasi_albert-250-300-0.85",logistic_regression_with_data,"data/moon10000.txt","LogisticRegression",40000,true,false,0.3,true)

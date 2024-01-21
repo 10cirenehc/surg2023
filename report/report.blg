@@ -1,15 +1,15 @@
 [0] Config.pm:307> INFO - This is Biber 2.19
 [0] Config.pm:310> INFO - Logfile is 'report.blg'
-[38] biber-darwin:340> INFO - === Mon Sep 25, 2023, 16:27:16
-[48] Biber.pm:419> INFO - Reading 'report.bcf'
-[95] Biber.pm:979> INFO - Found 1 citekeys in bib section 0
-[104] Biber.pm:4419> INFO - Processing section 0
-[110] Biber.pm:4610> INFO - Looking for bibtex file 'bibliography.bib' for section 0
-[112] bibtex.pm:1713> INFO - LaTeX decoding ...
-[125] bibtex.pm:1519> INFO - Found BibTeX data source 'bibliography.bib'
-[146] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[146] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[146] Biber.pm:4239> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
-[147] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
-[152] bbl.pm:660> INFO - Writing 'report.bbl' with encoding 'UTF-8'
-[153] bbl.pm:763> INFO - Output to report.bbl
+[44] biber-darwin:340> INFO - === Tue Jan 16, 2024, 10:57:16
+[65] Biber.pm:419> INFO - Reading 'report.bcf'
+[113] Biber.pm:979> INFO - Found 10 citekeys in bib section 0
+[122] Biber.pm:4419> INFO - Processing section 0
+[128] Biber.pm:4610> INFO - Looking for bibtex file 'bibliography.bib' for section 0
+[130] bibtex.pm:1713> INFO - LaTeX decoding ...
+[143] bibtex.pm:1519> INFO - Found BibTeX data source 'bibliography.bib'
+[203] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[203] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[203] Biber.pm:4239> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
+[203] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
+[210] bbl.pm:660> INFO - Writing 'report.bbl' with encoding 'UTF-8'
+[215] bbl.pm:763> INFO - Output to report.bbl

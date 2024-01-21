@@ -19,6 +19,142 @@
 
 \refsection{0}
   \datalist[entry]{none/global//global/global}
+    \entry{yangSurveyDistributedOptimization2019}{article}{}
+      \name{author}{10}{}{%
+        {{hash=30dbf96c2effbc0427e80f15e466813e}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Tao},
+           giveni={T\bibinitperiod}}}%
+        {{hash=7af147b49c2d3fae29faac736f9a1c24}{%
+           family={Yi},
+           familyi={Y\bibinitperiod},
+           given={Xinlei},
+           giveni={X\bibinitperiod}}}%
+        {{hash=beca20484ce755483b6f38e1fad54e86}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Junfeng},
+           giveni={J\bibinitperiod}}}%
+        {{hash=b3c38717dc1be8193594d3b0948ca51a}{%
+           family={Yuan},
+           familyi={Y\bibinitperiod},
+           given={Ye},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=65027af5f4f54f2e6c7bb140253872e2}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Di},
+           giveni={D\bibinitperiod}}}%
+        {{hash=990a0c228d8984ae7b4eed2cdc1ca325}{%
+           family={Meng},
+           familyi={M\bibinitperiod},
+           given={Ziyang},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=90658d6ff53a55d1172035395db8a599}{%
+           family={Hong},
+           familyi={H\bibinitperiod},
+           given={Yiguang},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=6b170f4c37010a14987a849eab01fe7b}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Hong},
+           giveni={H\bibinitperiod}}}%
+        {{hash=41ec64e0e24a86df327e7f7a36046e1f}{%
+           family={Lin},
+           familyi={L\bibinitperiod},
+           given={Zongli},
+           giveni={Z\bibinitperiod}}}%
+        {{hash=ca50080f9b7c6c18b9184edcde522d37}{%
+           family={Johansson},
+           familyi={J\bibinitperiod},
+           given={Karl\bibnamedelima H.},
+           giveni={K\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \strng{namehash}{fb7dc89ced9e432bce66340bbabe11cc}
+      \strng{fullhash}{35ecf83a6130116ac62387a01867cc21}
+      \strng{bibnamehash}{fb7dc89ced9e432bce66340bbabe11cc}
+      \strng{authorbibnamehash}{fb7dc89ced9e432bce66340bbabe11cc}
+      \strng{authornamehash}{fb7dc89ced9e432bce66340bbabe11cc}
+      \strng{authorfullhash}{35ecf83a6130116ac62387a01867cc21}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{13675788}
+      \field{journaltitle}{Annual Reviews in Control}
+      \field{langid}{english}
+      \field{shortjournal}{Annual Reviews in Control}
+      \field{title}{A Survey of Distributed Optimization}
+      \field{urlday}{7}
+      \field{urlmonth}{3}
+      \field{urlyear}{2023}
+      \field{volume}{47}
+      \field{year}{2019}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{278\bibrangedash 305}
+      \range{pages}{28}
+      \verb{doi}
+      \verb 10.1016/j.arcontrol.2019.05.006
+      \endverb
+      \verb{file}
+      \verb /Users/ericchen/Zotero/storage/LMDC5JAG/Yang et al. - 2019 - A survey of distributed optimization.pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://linkinghub.elsevier.com/retrieve/pii/S1367578819300082
+      \endverb
+      \verb{url}
+      \verb https://linkinghub.elsevier.com/retrieve/pii/S1367578819300082
+      \endverb
+    \endentry
+    \entry{boydDistributedOptimizationStatistical2010}{article}{}
+      \name{author}{1}{}{%
+        {{hash=ec94d94cc487dd71939a90cbeaaf47d0}{%
+           family={Boyd},
+           familyi={B\bibinitperiod},
+           given={Stephen},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{ec94d94cc487dd71939a90cbeaaf47d0}
+      \strng{fullhash}{ec94d94cc487dd71939a90cbeaaf47d0}
+      \strng{bibnamehash}{ec94d94cc487dd71939a90cbeaaf47d0}
+      \strng{authorbibnamehash}{ec94d94cc487dd71939a90cbeaaf47d0}
+      \strng{authornamehash}{ec94d94cc487dd71939a90cbeaaf47d0}
+      \strng{authorfullhash}{ec94d94cc487dd71939a90cbeaaf47d0}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1935-8237, 1935-8245}
+      \field{journaltitle}{Foundations and Trends® in Machine Learning}
+      \field{langid}{english}
+      \field{number}{1}
+      \field{shortjournal}{FNT in Machine Learning}
+      \field{title}{Distributed {{Optimization}} and {{Statistical Learning}} via the {{Alternating Direction Method}} of {{Multipliers}}}
+      \field{urlday}{7}
+      \field{urlmonth}{3}
+      \field{urlyear}{2023}
+      \field{volume}{3}
+      \field{year}{2010}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{1\bibrangedash 122}
+      \range{pages}{122}
+      \verb{doi}
+      \verb 10.1561/2200000016
+      \endverb
+      \verb{file}
+      \verb /Users/ericchen/Zotero/storage/YR9WJ2LN/Boyd - 2010 - Distributed Optimization and Statistical Learning .pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://www.nowpublishers.com/article/Details/MAL-016
+      \endverb
+      \verb{url}
+      \verb http://www.nowpublishers.com/article/Details/MAL-016
+      \endverb
+    \endentry
     \entry{ridgleySelfHealingFirstOrderDistributed2021}{article}{}
       \name{author}{3}{}{%
         {{hash=09595be021d543664b2b0839cda5efec}{%
@@ -46,8 +182,8 @@
       \strng{authorbibnamehash}{25e76f84b0cf64d11da1a4c5bea44c73}
       \strng{authornamehash}{25e76f84b0cf64d11da1a4c5bea44c73}
       \strng{authorfullhash}{25e76f84b0cf64d11da1a4c5bea44c73}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{In this paper we describe a parameterized family of first-order distributed optimization algorithms that enable a network of agents to collaboratively calculate a decision variable that minimizes the sum of cost functions at each agent. These algorithms are self-healing in that their correctness is guaranteed even if they are initialized randomly, agents drop in or out of the network, local cost functions change, or communication packets are dropped. Our algorithms are the first single-Laplacian methods to exhibit all of these characteristics. We achieve self-healing by sacrificing internal stability, a fundamental trade-off for single-Laplacian methods.}
@@ -69,6 +205,340 @@
       \verb https://arxiv.org/abs/2104.01959
       \endverb
       \keyw{FOS: Computer and information sciences,{FOS: Electrical engineering,electronic engineering,information engineering},FOS: Mathematics,Multiagent Systems (cs.MA),Optimization and Control (math.OC),Systems and Control (eess.SY)}
+    \endentry
+    \entry{sundararajanAnalysisDesignFirstOrder2020}{article}{}
+      \name{author}{3}{}{%
+        {{hash=8d3a647d3ab777bc5d044ec58a65f37b}{%
+           family={Sundararajan},
+           familyi={S\bibinitperiod},
+           given={Akhil},
+           giveni={A\bibinitperiod}}}%
+        {{hash=ac476c60d025cb27c9fde7a8d5f2bb46}{%
+           family={Van\bibnamedelima Scoy},
+           familyi={V\bibinitperiod\bibinitdelim S\bibinitperiod},
+           given={Bryan},
+           giveni={B\bibinitperiod}}}%
+        {{hash=e6a96b414aeb7c620d23920c90ec9357}{%
+           family={Lessard},
+           familyi={L\bibinitperiod},
+           given={Laurent},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{480bbb4799dff506582bdb062e501ffa}
+      \strng{fullhash}{480bbb4799dff506582bdb062e501ffa}
+      \strng{bibnamehash}{480bbb4799dff506582bdb062e501ffa}
+      \strng{authorbibnamehash}{480bbb4799dff506582bdb062e501ffa}
+      \strng{authornamehash}{480bbb4799dff506582bdb062e501ffa}
+      \strng{authorfullhash}{480bbb4799dff506582bdb062e501ffa}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{2325-5870, 2372-2533}
+      \field{journaltitle}{IEEE Transactions on Control of Network Systems}
+      \field{month}{12}
+      \field{number}{4}
+      \field{shortjournal}{IEEE Trans. Control Netw. Syst.}
+      \field{title}{Analysis and {{Design}} of {{First-Order Distributed Optimization Algorithms Over Time-Varying Graphs}}}
+      \field{urlday}{8}
+      \field{urlmonth}{3}
+      \field{urlyear}{2023}
+      \field{volume}{7}
+      \field{year}{2020}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{1597\bibrangedash 1608}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1109/TCNS.2020.2988009
+      \endverb
+      \verb{file}
+      \verb /Users/ericchen/Zotero/storage/FRZXPMPW/Sundararajan et al. - 2020 - Analysis and Design of First-Order Distributed Opt.pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://ieeexplore.ieee.org/document/9069430/
+      \endverb
+      \verb{url}
+      \verb https://ieeexplore.ieee.org/document/9069430/
+      \endverb
+    \endentry
+    \entry{Graphs2021}{misc}{}
+      \name{author}{6}{}{%
+        {{hash=1d30a8595a636bf14fcd181b6822212d}{%
+           family={Fairbanks},
+           familyi={F\bibinitperiod},
+           given={James},
+           giveni={J\bibinitperiod}}}%
+        {{hash=145e91a29c8cef5733e25e9bf3810db6}{%
+           family={Besançon},
+           familyi={B\bibinitperiod},
+           given={Mathieu},
+           giveni={M\bibinitperiod}}}%
+        {{hash=23e648d46c17f5dd1d7d82db93d2a81e}{%
+           family={Simon},
+           familyi={S\bibinitperiod},
+           given={Schölly},
+           giveni={S\bibinitperiod}}}%
+        {{hash=be20c25c36e22aee998ae7d9c6101046}{%
+           family={Hoffiman},
+           familyi={H\bibinitperiod},
+           given={Júlio},
+           giveni={J\bibinitperiod}}}%
+        {{hash=df18de09176e25e0595b07a7ec10e31b}{%
+           family={Eubank},
+           familyi={E\bibinitperiod},
+           given={Nick},
+           giveni={N\bibinitperiod}}}%
+        {{hash=bca7c93f55e669f71c4ff95e68ac9538}{%
+           family={Karpinski},
+           familyi={K\bibinitperiod},
+           given={Stefan},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{9e814593c576a9ea462b34329efe96da}
+      \strng{fullhash}{74bfb5a9ecbf126c98ede4232cccb178}
+      \strng{bibnamehash}{74bfb5a9ecbf126c98ede4232cccb178}
+      \strng{authorbibnamehash}{74bfb5a9ecbf126c98ede4232cccb178}
+      \strng{authornamehash}{9e814593c576a9ea462b34329efe96da}
+      \strng{authorfullhash}{74bfb5a9ecbf126c98ede4232cccb178}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{JuliaGraphs/Graphs.jl: an optimized graphs package for the Julia programming language}
+      \field{year}{2021}
+      \verb{urlraw}
+      \verb https://github.com/JuliaGraphs/Graphs.jl/
+      \endverb
+      \verb{url}
+      \verb https://github.com/JuliaGraphs/Graphs.jl/
+      \endverb
+    \endentry
+    \entry{diskLinePacking}{article}{}
+      \name{author}{1}{}{%
+        {{hash=819197bfeff32a3f58d49b2a3eb0a580}{%
+           family={Weisstein},
+           familyi={W\bibinitperiod},
+           given={Eric\bibnamedelima W.},
+           giveni={E\bibinitperiod\bibinitdelim W\bibinitperiod}}}%
+      }
+      \strng{namehash}{819197bfeff32a3f58d49b2a3eb0a580}
+      \strng{fullhash}{819197bfeff32a3f58d49b2a3eb0a580}
+      \strng{bibnamehash}{819197bfeff32a3f58d49b2a3eb0a580}
+      \strng{authorbibnamehash}{819197bfeff32a3f58d49b2a3eb0a580}
+      \strng{authornamehash}{819197bfeff32a3f58d49b2a3eb0a580}
+      \strng{authorfullhash}{819197bfeff32a3f58d49b2a3eb0a580}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{MathWorld--A Wolfram Web Resource}
+      \field{title}{Disk Line Packing}
+      \field{year}{2023}
+      \field{dateera}{ce}
+      \verb{urlraw}
+      \verb https://mathworld.wolfram.com/DiskLinePacking.html
+      \endverb
+      \verb{url}
+      \verb https://mathworld.wolfram.com/DiskLinePacking.html
+      \endverb
+    \endentry
+    \entry{cosmo}{article}{}
+      \name{author}{3}{}{%
+        {{hash=3c7e0d1f41357ce88aa50ee7085f392c}{%
+           family={Garstka},
+           familyi={G\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+        {{hash=6c557ab1156d90dd2aa0a798d04da6b7}{%
+           family={Cannon},
+           familyi={C\bibinitperiod},
+           given={Mark},
+           giveni={M\bibinitperiod}}}%
+        {{hash=7a1852344415c025177393869723c8f5}{%
+           family={Goulart},
+           familyi={G\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{1f20c732e10ce06b07f6f77b954666da}
+      \strng{fullhash}{1f20c732e10ce06b07f6f77b954666da}
+      \strng{bibnamehash}{1f20c732e10ce06b07f6f77b954666da}
+      \strng{authorbibnamehash}{1f20c732e10ce06b07f6f77b954666da}
+      \strng{authornamehash}{1f20c732e10ce06b07f6f77b954666da}
+      \strng{authorfullhash}{1f20c732e10ce06b07f6f77b954666da}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Optimization Theory and Applications}
+      \field{number}{3}
+      \field{title}{{COSMO}: A Conic Operator Splitting Method for Convex Conic Problems}
+      \field{volume}{190}
+      \field{year}{2021}
+      \field{pages}{779\bibrangedash 810}
+      \range{pages}{32}
+      \verb{doi}
+      \verb 10.1007/s10957-021-01896-x
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1007/s10957-021-01896-x
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1007/s10957-021-01896-x
+      \endverb
+    \endentry
+    \entry{Optim.jl-2018}{article}{}
+      \name{author}{2}{}{%
+        {{hash=1b6d453f168f7ade106ab2cbda2f5a8e}{%
+           family={Mogensen},
+           familyi={M\bibinitperiod},
+           given={Patrick\bibnamedelima Kofod},
+           giveni={P\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=54c3fff0bd060b64b6ffa47f9d978492}{%
+           family={Riseth},
+           familyi={R\bibinitperiod},
+           given={Asbj{ø}rn\bibnamedelima Nilsen},
+           giveni={A\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+      }
+      \strng{namehash}{67149cab00629f9084d89d4309895e27}
+      \strng{fullhash}{67149cab00629f9084d89d4309895e27}
+      \strng{bibnamehash}{67149cab00629f9084d89d4309895e27}
+      \strng{authorbibnamehash}{67149cab00629f9084d89d4309895e27}
+      \strng{authornamehash}{67149cab00629f9084d89d4309895e27}
+      \strng{authorfullhash}{67149cab00629f9084d89d4309895e27}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Open Source Software}
+      \field{number}{24}
+      \field{title}{Optim: A mathematical optimization package for {Julia}}
+      \field{volume}{3}
+      \field{year}{2018}
+      \field{pages}{615}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.21105/joss.00615
+      \endverb
+    \endentry
+    \entry{Convex.jl-2014}{inproceedings}{}
+      \name{author}{6}{}{%
+        {{hash=8fb06ee4839e284f359c2733a642ce8d}{%
+           family={Udell},
+           familyi={U\bibinitperiod},
+           given={Madeleine},
+           giveni={M\bibinitperiod}}}%
+        {{hash=432e0d66e814fb5fbeaf98f2d327456e}{%
+           family={Mohan},
+           familyi={M\bibinitperiod},
+           given={Karanveer},
+           giveni={K\bibinitperiod}}}%
+        {{hash=d32b05bf42780def64fad9fca01a6ade}{%
+           family={Zeng},
+           familyi={Z\bibinitperiod},
+           given={David},
+           giveni={D\bibinitperiod}}}%
+        {{hash=faf318ef4acda4567253c563b330f7ff}{%
+           family={Hong},
+           familyi={H\bibinitperiod},
+           given={Jenny},
+           giveni={J\bibinitperiod}}}%
+        {{hash=d50bdcda78beb231a5057a4372dac2fd}{%
+           family={Diamond},
+           familyi={D\bibinitperiod},
+           given={Steven},
+           giveni={S\bibinitperiod}}}%
+        {{hash=ec94d94cc487dd71939a90cbeaaf47d0}{%
+           family={Boyd},
+           familyi={B\bibinitperiod},
+           given={Stephen},
+           giveni={S\bibinitperiod}}}%
+      }
+      \list{organization}{1}{%
+        {IEEE Press}%
+      }
+      \strng{namehash}{7ea27025caecea7426126a0f8d730ac5}
+      \strng{fullhash}{e7e4c10308c6ea4034fe7fea3e8d0321}
+      \strng{bibnamehash}{e7e4c10308c6ea4034fe7fea3e8d0321}
+      \strng{authorbibnamehash}{e7e4c10308c6ea4034fe7fea3e8d0321}
+      \strng{authornamehash}{7ea27025caecea7426126a0f8d730ac5}
+      \strng{authorfullhash}{e7e4c10308c6ea4034fe7fea3e8d0321}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 1st First Workshop for High Performance Technical Computing in Dynamic Languages}
+      \field{title}{Convex optimization in {J}ulia}
+      \field{year}{2014}
+      \field{pages}{18\bibrangedash 28}
+      \range{pages}{11}
+    \endentry
+    \entry{Blaom2020}{article}{}
+      \name{author}{6}{}{%
+        {{hash=69a5cb521ef850df9532df22f2ce45de}{%
+           family={Blaom},
+           familyi={B\bibinitperiod},
+           given={Anthony\bibnamedelima D.},
+           giveni={A\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=a69a29312ee4415e0a6fc6247030082e}{%
+           family={Kiraly},
+           familyi={K\bibinitperiod},
+           given={Franz},
+           giveni={F\bibinitperiod}}}%
+        {{hash=6f7770f3377cd361db83a83dbf9b9f75}{%
+           family={Lienart},
+           familyi={L\bibinitperiod},
+           given={Thibaut},
+           giveni={T\bibinitperiod}}}%
+        {{hash=4fbe727a4961af603d7466f04cfd5fbd}{%
+           family={Simillides},
+           familyi={S\bibinitperiod},
+           given={Yiannis},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=a030e641be52e52dffbe32b0e245874e}{%
+           family={Arenas},
+           familyi={A\bibinitperiod},
+           given={Diego},
+           giveni={D\bibinitperiod}}}%
+        {{hash=da8c4a1063d4f05f345ac9cd17934701}{%
+           family={Vollmer},
+           familyi={V\bibinitperiod},
+           given={Sebastian\bibnamedelima J.},
+           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {The Open Journal}%
+      }
+      \strng{namehash}{eebdf92c6c014689c468c6ed11f12849}
+      \strng{fullhash}{588a9b69024d516407c722cf2f0692a7}
+      \strng{bibnamehash}{588a9b69024d516407c722cf2f0692a7}
+      \strng{authorbibnamehash}{588a9b69024d516407c722cf2f0692a7}
+      \strng{authornamehash}{eebdf92c6c014689c468c6ed11f12849}
+      \strng{authorfullhash}{588a9b69024d516407c722cf2f0692a7}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Open Source Software}
+      \field{number}{55}
+      \field{title}{{MLJ}: A Julia package for composable machine learning}
+      \field{volume}{5}
+      \field{year}{2020}
+      \field{pages}{2704}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.21105/joss.02704
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.21105/joss.02704
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.21105/joss.02704
+      \endverb
     \endentry
   \enddatalist
 \endrefsection
